@@ -1,5 +1,4 @@
 import express, { Application } from 'express';
-import mysql from 'mysql';
 // routes import
 import { carRouter } from './routes/car';
 

@@ -1,9 +1,21 @@
 import { Request, Response, Router } from 'express';
+import { DbManager } from './../services/DbManager';
 
 export const carRouter = Router();
 
-carRouter.get('/getCars', (req: Request, res: Response) => {
-    res.send('/getCars');
+carRouter.get('/getCars', async (req: Request, res: Response) => {
+    let response: any = {
+        success: false,
+    };
+    let carList = await new DbManager().exec('SELECT * FROM car');
+    if (carList) {
+        response.success = true;
+        response.cars = carList;
+    } else {
+        response.success = false;
+        response.message = 'Error :';
+    }
+    res.json(response);
 });
 
 carRouter.get('/deleteCar/:id', (req: Request, res: Response) => {
