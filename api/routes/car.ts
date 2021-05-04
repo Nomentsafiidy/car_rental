@@ -3,11 +3,20 @@ import { DbManager } from './../services/DbManager';
 
 export const carRouter = Router();
 
-carRouter.get('/getCars', async (_req: Request, res: Response) => {
+carRouter.post('/getCars', async (req: Request, res: Response) => {
     let response: any = {
         success: false,
     };
-    let carList = await new DbManager().exec('SELECT * FROM car');
+    let { keyWord } = req.body;
+    let queryString: string = '';
+    if (keyWord && isNaN(parseInt(keyWord))) {
+        queryString = `SELECT * FROM car WHERE designation LIKE '%${keyWord}%' `;
+    } else if (keyWord && !isNaN(parseInt(keyWord))) {
+        queryString = `SELECT * FROM car WHERE id = ${parseInt(keyWord)} `;
+    } else {
+        queryString = 'SELECT * FROM car';
+    }
+    let carList = await new DbManager().exec(queryString);
     if (carList) {
         response.success = true;
         response.cars = carList;

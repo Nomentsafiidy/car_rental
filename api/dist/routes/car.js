@@ -40,15 +40,26 @@ exports.carRouter = void 0;
 var express_1 = require("express");
 var DbManager_1 = require("./../services/DbManager");
 exports.carRouter = express_1.Router();
-exports.carRouter.get('/getCars', function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, carList;
+exports.carRouter.post('/getCars', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, keyWord, queryString, carList;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 response = {
                     success: false,
                 };
-                return [4 /*yield*/, new DbManager_1.DbManager().exec('SELECT * FROM car')];
+                keyWord = req.body.keyWord;
+                queryString = '';
+                if (keyWord && isNaN(parseInt(keyWord))) {
+                    queryString = "SELECT * FROM car WHERE designation LIKE '%" + keyWord + "%' ";
+                }
+                else if (keyWord && !isNaN(parseInt(keyWord))) {
+                    queryString = "SELECT * FROM car WHERE id = " + parseInt(keyWord) + " ";
+                }
+                else {
+                    queryString = 'SELECT * FROM car';
+                }
+                return [4 /*yield*/, new DbManager_1.DbManager().exec(queryString)];
             case 1:
                 carList = _a.sent();
                 if (carList) {

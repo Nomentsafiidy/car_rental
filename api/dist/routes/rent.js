@@ -40,7 +40,7 @@ exports.rentRouter = void 0;
 var express_1 = require("express");
 var DbManager_1 = require("./../services/DbManager");
 exports.rentRouter = express_1.Router();
-exports.rentRouter.post('/getRent', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.rentRouter.post('/getRents', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var response, queryString, rentList, _a, keyWord, startDate, endDate;
     return __generator(this, function (_b) {
         switch (_b.label) {

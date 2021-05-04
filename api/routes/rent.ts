@@ -3,7 +3,7 @@ import { DbManager } from './../services/DbManager';
 
 export const rentRouter = Router();
 
-rentRouter.post('/getRent', async (req: Request, res: Response) => {
+rentRouter.post('/getRents', async (req: Request, res: Response) => {
     let response: any = {
         success: false,
     };
