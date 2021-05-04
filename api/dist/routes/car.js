@@ -40,7 +40,7 @@ exports.carRouter = void 0;
 var express_1 = require("express");
 var DbManager_1 = require("./../services/DbManager");
 exports.carRouter = express_1.Router();
-exports.carRouter.get('/getCars', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.carRouter.get('/getCars', function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var response, carList;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -64,12 +64,75 @@ exports.carRouter.get('/getCars', function (req, res) { return __awaiter(void 0,
         }
     });
 }); });
-exports.carRouter.get('/deleteCar/:id', function (req, res) {
-    res.send('/deleteCar/' + req.params.id);
-});
-exports.carRouter.post('/updateCar/:id', function (req, res) {
-    res.send('/updateCar/:id' + req.params.id);
-});
-exports.carRouter.post('/addCar', function (req, res) {
-    res.send('/addCar');
-});
+exports.carRouter.get('/deleteCar/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, carList;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                response = {
+                    success: false,
+                };
+                return [4 /*yield*/, new DbManager_1.DbManager().exec("DELETE FROM car WHERE id = " + parseInt(req.params.id))];
+            case 1:
+                carList = _a.sent();
+                if (carList) {
+                    response.success = true;
+                }
+                else {
+                    response.success = false;
+                    response.message = 'Error :';
+                }
+                res.json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.carRouter.post('/updateCar', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, id, designation, dailyRent, response, car;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, id = _a.id, designation = _a.designation, dailyRent = _a.dailyRent;
+                response = {
+                    success: false,
+                };
+                return [4 /*yield*/, new DbManager_1.DbManager().exec("UPDATE car\n    SET designation = '" + designation.toString() + "', dailyRent = " + parseInt(dailyRent) + "\n    WHERE id = " + parseInt(id))];
+            case 1:
+                car = _b.sent();
+                if (car) {
+                    response.success = true;
+                }
+                else {
+                    response.success = false;
+                    response.message = 'Error :';
+                }
+                res.json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.carRouter.post('/addCar', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, designation, dailyRent, response, car;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, designation = _a.designation, dailyRent = _a.dailyRent;
+                response = {
+                    success: false,
+                };
+                return [4 /*yield*/, new DbManager_1.DbManager().exec("INSERT INTO car (designation, dailyRent)\nVALUES ( '" + designation.toString() + "', " + parseInt(dailyRent) + " )")];
+            case 1:
+                car = _b.sent();
+                if (car) {
+                    response.success = true;
+                    response.id = car.insertId;
+                }
+                else {
+                    response.success = false;
+                    response.message = 'Error :';
+                }
+                res.json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });

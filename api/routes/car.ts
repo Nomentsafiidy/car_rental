@@ -3,7 +3,7 @@ import { DbManager } from './../services/DbManager';
 
 export const carRouter = Router();
 
-carRouter.get('/getCars', async (req: Request, res: Response) => {
+carRouter.get('/getCars', async (_req: Request, res: Response) => {
     let response: any = {
         success: false,
     };
@@ -18,14 +18,50 @@ carRouter.get('/getCars', async (req: Request, res: Response) => {
     res.json(response);
 });
 
-carRouter.get('/deleteCar/:id', (req: Request, res: Response) => {
-    res.send('/deleteCar/' + req.params.id);
+carRouter.get('/deleteCar/:id', async (req: Request, res: Response) => {
+    let response: any = {
+        success: false,
+    };
+    let carList = await new DbManager().exec(`DELETE FROM car WHERE id = ${parseInt(req.params.id)}`);
+    if (carList) {
+        response.success = true;
+    } else {
+        response.success = false;
+        response.message = 'Error :';
+    }
+    res.json(response);
 });
 
-carRouter.post('/updateCar/:id', (req: Request, res: Response) => {
-    res.send('/updateCar/:id' + req.params.id);
+carRouter.post('/updateCar', async (req: Request, res: Response) => {
+    let { id, designation, dailyRent } = req.body;
+    let response: any = {
+        success: false,
+    };
+    let car: any = await new DbManager().exec(`UPDATE car
+    SET designation = '${designation.toString()}', dailyRent = ${parseInt(dailyRent)}
+    WHERE id = ${parseInt(id)}`);
+    if (car) {
+        response.success = true;
+    } else {
+        response.success = false;
+        response.message = 'Error :';
+    }
+    res.json(response);
 });
 
-carRouter.post('/addCar', (req: Request, res: Response) => {
-    res.send('/addCar');
+carRouter.post('/addCar', async (req: Request, res: Response) => {
+    let { designation, dailyRent } = req.body;
+    let response: any = {
+        success: false,
+    };
+    let car: any = await new DbManager().exec(`INSERT INTO car (designation, dailyRent)
+VALUES ( '${designation.toString()}', ${parseInt(dailyRent)} )`);
+    if (car) {
+        response.success = true;
+        response.id = car.insertId;
+    } else {
+        response.success = false;
+        response.message = 'Error :';
+    }
+    res.json(response);
 });
