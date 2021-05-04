@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 // routes import
 var car_1 = require("./routes/car");
+var renter_1 = require("./routes/renter");
 var app = express_1.default();
 var port = 3000;
 app.use(express_1.default.json());
 app.use(car_1.carRouter);
+app.use(renter_1.renterRouter);
 app.listen(port, function () { return console.log("Example app listening at http://localhost:" + port); });
