@@ -11,25 +11,50 @@ rentRouter.post('/getRents', async (req: Request, res: Response) => {
     let rentList: any;
     let { keyWord, startDate, endDate } = req.body;
     if (keyWord && startDate && endDate && !isNaN(parseInt(keyWord)) && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
-        queryString = `SELECT * FROM rent where (
+        queryString = `SELECT rent.id as id, carId, renterId, daysNumber, date, 
+                        designation, dailyRent,
+                        name, address                        
+                        FROM rent 
+                        INNER JOIN car ON car.id = carId
+                        INNER JOIN renter ON renter.id = renterId
+                        where (
                         id = ${parseInt(keyWord)} OR
                         carId = ${parseInt(keyWord)} OR 
-                        renterId = ${parseInt(keyWord)} ) AND 
+                        renterId = ${parseInt(keyWord)} 
+                        ) 
+                            AND 
                         (  
                             date >= ${parseInt(startDate)} AND 
                             date <= ${parseInt(endDate)}  
                         ) `;
     } else if (keyWord && !isNaN(parseInt(keyWord))) {
-        queryString = `SELECT * FROM rent where
+        queryString = `SELECT rent.id as id, carId, renterId, daysNumber, date, 
+                        designation, dailyRent,
+                        name, address                        
+                        FROM rent 
+                        INNER JOIN car ON car.id = carId
+                        INNER JOIN renter ON renter.id = renterId
+                        where
                         id = ${parseInt(keyWord)} OR
                         carId = ${parseInt(keyWord)} OR 
                         renterId = ${parseInt(keyWord)} `;
     } else if (startDate && endDate && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
-        queryString = `SELECT * FROM rent where 
+        queryString = `SELECT rent.id as id, carId, renterId, daysNumber, date, 
+                        designation, dailyRent,
+                        name, address                        
+                        FROM rent 
+                        INNER JOIN car ON car.id = carId
+                        INNER JOIN renter ON renter.id = renterId 
+                        where 
                             date >= ${parseInt(startDate)} AND 
                             date <= ${parseInt(endDate)} `;
     } else {
-        queryString = ' SELECT * FROM  rent ';
+        queryString = ` SELECT rent.id as id, carId, renterId, daysNumber, date, 
+                        designation, dailyRent,
+                        name, address                        
+                        FROM rent 
+                        INNER JOIN car ON car.id = carId
+                        INNER JOIN renter ON renter.id = renterId `;
     }
     rentList = await new DbManager().exec(queryString);
     if (rentList) {

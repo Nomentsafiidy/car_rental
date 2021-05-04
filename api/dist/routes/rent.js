@@ -51,16 +51,16 @@ exports.rentRouter.post('/getRents', function (req, res) { return __awaiter(void
                 queryString = '';
                 _a = req.body, keyWord = _a.keyWord, startDate = _a.startDate, endDate = _a.endDate;
                 if (keyWord && startDate && endDate && !isNaN(parseInt(keyWord)) && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
-                    queryString = "SELECT * FROM rent where (\n                        id = " + parseInt(keyWord) + " OR\n                        carId = " + parseInt(keyWord) + " OR \n                        renterId = " + parseInt(keyWord) + " ) AND \n                        (  \n                            date >= " + parseInt(startDate) + " AND \n                            date <= " + parseInt(endDate) + "  \n                        ) ";
+                    queryString = "SELECT rent.id as id, carId, renterId, daysNumber, date, \n                        designation, dailyRent,\n                        name, address                        \n                        FROM rent \n                        INNER JOIN car ON car.id = carId\n                        INNER JOIN renter ON renter.id = renterId\n                        where (\n                        id = " + parseInt(keyWord) + " OR\n                        carId = " + parseInt(keyWord) + " OR \n                        renterId = " + parseInt(keyWord) + " \n                        ) \n                            AND \n                        (  \n                            date >= " + parseInt(startDate) + " AND \n                            date <= " + parseInt(endDate) + "  \n                        ) ";
                 }
                 else if (keyWord && !isNaN(parseInt(keyWord))) {
-                    queryString = "SELECT * FROM rent where\n                        id = " + parseInt(keyWord) + " OR\n                        carId = " + parseInt(keyWord) + " OR \n                        renterId = " + parseInt(keyWord) + " ";
+                    queryString = "SELECT rent.id as id, carId, renterId, daysNumber, date, \n                        designation, dailyRent,\n                        name, address                        \n                        FROM rent \n                        INNER JOIN car ON car.id = carId\n                        INNER JOIN renter ON renter.id = renterId\n                        where\n                        id = " + parseInt(keyWord) + " OR\n                        carId = " + parseInt(keyWord) + " OR \n                        renterId = " + parseInt(keyWord) + " ";
                 }
                 else if (startDate && endDate && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
-                    queryString = "SELECT * FROM rent where \n                            date >= " + parseInt(startDate) + " AND \n                            date <= " + parseInt(endDate) + " ";
+                    queryString = "SELECT rent.id as id, carId, renterId, daysNumber, date, \n                        designation, dailyRent,\n                        name, address                        \n                        FROM rent \n                        INNER JOIN car ON car.id = carId\n                        INNER JOIN renter ON renter.id = renterId \n                        where \n                            date >= " + parseInt(startDate) + " AND \n                            date <= " + parseInt(endDate) + " ";
                 }
                 else {
-                    queryString = ' SELECT * FROM  rent ';
+                    queryString = " SELECT rent.id as id, carId, renterId, daysNumber, date, \n                        designation, dailyRent,\n                        name, address                        \n                        FROM rent \n                        INNER JOIN car ON car.id = carId\n                        INNER JOIN renter ON renter.id = renterId ";
                 }
                 return [4 /*yield*/, new DbManager_1.DbManager().exec(queryString)];
             case 1:
