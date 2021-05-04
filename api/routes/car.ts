@@ -27,6 +27,33 @@ carRouter.post('/getCars', async (req: Request, res: Response) => {
     res.json(response);
 });
 
+carRouter.post('/getCarRentInfo', async (req: Request, res: Response) => {
+    let response: any = {
+        success: false,
+    };
+    let { id, startDate, endDate } = req.body;
+    if (id && startDate && endDate) {
+        let queryString: string = '';
+        queryString = `SELECT car.id as id, carId, renterId, daysNumber, date, 
+                    designation, dailyRent,
+                    name, address
+                    FROM car 
+                   INNER JOIN rent ON rent.carId = car.id AND date >= ${parseInt(startDate)} AND 
+                   date <= ${parseInt(endDate)} 
+                   INNER JOIN renter ON renter.id = rent.renterId
+                   WHERE car.id = ${parseInt(id)} `;
+        let carList = await new DbManager().exec(queryString);
+        if (carList) {
+            response.success = true;
+            response.cars = carList;
+        } else {
+            response.success = false;
+            response.message = 'Error :';
+        }
+    }
+    res.json(response);
+});
+
 carRouter.get('/deleteCar/:id', async (req: Request, res: Response) => {
     let response: any = {
         success: false,

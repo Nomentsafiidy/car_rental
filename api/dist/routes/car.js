@@ -75,6 +75,36 @@ exports.carRouter.post('/getCars', function (req, res) { return __awaiter(void 0
         }
     });
 }); });
+exports.carRouter.post('/getCarRentInfo', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, _a, id, startDate, endDate, queryString, carList;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                response = {
+                    success: false,
+                };
+                _a = req.body, id = _a.id, startDate = _a.startDate, endDate = _a.endDate;
+                if (!(id && startDate && endDate)) return [3 /*break*/, 2];
+                queryString = '';
+                queryString = "SELECT car.id as id, carId, renterId, daysNumber, date, \n                    designation, dailyRent,\n                    name, address\n                    FROM car \n                   INNER JOIN rent ON rent.carId = car.id AND date >= " + parseInt(startDate) + " AND \n                   date <= " + parseInt(endDate) + " \n                   INNER JOIN renter ON renter.id = rent.renterId\n                   WHERE car.id = " + parseInt(id) + " ";
+                return [4 /*yield*/, new DbManager_1.DbManager().exec(queryString)];
+            case 1:
+                carList = _b.sent();
+                if (carList) {
+                    response.success = true;
+                    response.cars = carList;
+                }
+                else {
+                    response.success = false;
+                    response.message = 'Error :';
+                }
+                _b.label = 2;
+            case 2:
+                res.json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });
 exports.carRouter.get('/deleteCar/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var response, carList;
     return __generator(this, function (_a) {
