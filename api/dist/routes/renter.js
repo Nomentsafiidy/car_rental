@@ -40,15 +40,26 @@ exports.renterRouter = void 0;
 var express_1 = require("express");
 var DbManager_1 = require("./../services/DbManager");
 exports.renterRouter = express_1.Router();
-exports.renterRouter.get('/getRenters', function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, renterList;
+exports.renterRouter.post('/getRenters', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, keyWord, queryString, renterList;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 response = {
                     success: false,
                 };
-                return [4 /*yield*/, new DbManager_1.DbManager().exec('SELECT * FROM renter')];
+                keyWord = req.body.keyWord;
+                queryString = '';
+                if (keyWord && isNaN(parseInt(keyWord))) {
+                    queryString = "SELECT * FROM renter WHERE name LIKE '%" + keyWord + "%' OR address LIKE '%" + keyWord + "%' ";
+                }
+                else if (keyWord && !isNaN(parseInt(keyWord))) {
+                    queryString = "SELECT * FROM renter WHERE id = " + parseInt(keyWord) + " ";
+                }
+                else {
+                    queryString = 'SELECT * FROM renter';
+                }
+                return [4 /*yield*/, new DbManager_1.DbManager().exec(queryString)];
             case 1:
                 renterList = _a.sent();
                 if (renterList) {

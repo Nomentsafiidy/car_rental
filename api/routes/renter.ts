@@ -3,11 +3,20 @@ import { DbManager } from './../services/DbManager';
 
 export const renterRouter = Router();
 
-renterRouter.get('/getRenters', async (_req: Request, res: Response) => {
+renterRouter.post('/getRenters', async (req: Request, res: Response) => {
     let response: any = {
         success: false,
     };
-    let renterList = await new DbManager().exec('SELECT * FROM renter');
+    let { keyWord } = req.body;
+    let queryString: string = '';
+    if (keyWord && isNaN(parseInt(keyWord))) {
+        queryString = `SELECT * FROM renter WHERE name LIKE '%${keyWord}%' OR address LIKE '%${keyWord}%' `;
+    } else if (keyWord && !isNaN(parseInt(keyWord))) {
+        queryString = `SELECT * FROM renter WHERE id = ${parseInt(keyWord)} `;
+    } else {
+        queryString = 'SELECT * FROM renter';
+    }
+    let renterList = await new DbManager().exec(queryString);
     if (renterList) {
         response.success = true;
         response.renters = renterList;
