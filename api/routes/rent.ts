@@ -3,11 +3,35 @@ import { DbManager } from './../services/DbManager';
 
 export const rentRouter = Router();
 
-rentRouter.get('/getRent', async (_req: Request, res: Response) => {
+rentRouter.post('/getRent', async (req: Request, res: Response) => {
     let response: any = {
         success: false,
     };
-    let rentList = await new DbManager().exec('SELECT * FROM rent');
+    let queryString: string = '';
+    let rentList: any;
+    let { keyWord, startDate, endDate } = req.body;
+    if (keyWord && startDate && endDate && !isNaN(parseInt(keyWord)) && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
+        queryString = `SELECT * FROM rent where (
+                        id = ${parseInt(keyWord)} OR
+                        carId = ${parseInt(keyWord)} OR 
+                        renterId = ${parseInt(keyWord)} ) AND 
+                        (  
+                            date >= ${parseInt(startDate)} AND 
+                            date <= ${parseInt(endDate)}  
+                        ) `;
+    } else if (keyWord && !isNaN(parseInt(keyWord))) {
+        queryString = `SELECT * FROM rent where
+                        id = ${parseInt(keyWord)} OR
+                        carId = ${parseInt(keyWord)} OR 
+                        renterId = ${parseInt(keyWord)} `;
+    } else if (startDate && endDate && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
+        queryString = `SELECT * FROM rent where 
+                            date >= ${parseInt(startDate)} AND 
+                            date <= ${parseInt(endDate)} `;
+    } else {
+        queryString = ' SELECT * FROM  rent ';
+    }
+    rentList = await new DbManager().exec(queryString);
     if (rentList) {
         response.success = true;
         response.rent = rentList;

@@ -40,17 +40,31 @@ exports.rentRouter = void 0;
 var express_1 = require("express");
 var DbManager_1 = require("./../services/DbManager");
 exports.rentRouter = express_1.Router();
-exports.rentRouter.get('/getRent', function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, rentList;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+exports.rentRouter.post('/getRent', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, queryString, rentList, _a, keyWord, startDate, endDate;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 response = {
                     success: false,
                 };
-                return [4 /*yield*/, new DbManager_1.DbManager().exec('SELECT * FROM rent')];
+                queryString = '';
+                _a = req.body, keyWord = _a.keyWord, startDate = _a.startDate, endDate = _a.endDate;
+                if (keyWord && startDate && endDate && !isNaN(parseInt(keyWord)) && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
+                    queryString = "SELECT * FROM rent where (\n                        id = " + parseInt(keyWord) + " OR\n                        carId = " + parseInt(keyWord) + " OR \n                        renterId = " + parseInt(keyWord) + " ) AND \n                        (  \n                            date >= " + parseInt(startDate) + " AND \n                            date <= " + parseInt(endDate) + "  \n                        ) ";
+                }
+                else if (keyWord && !isNaN(parseInt(keyWord))) {
+                    queryString = "SELECT * FROM rent where\n                        id = " + parseInt(keyWord) + " OR\n                        carId = " + parseInt(keyWord) + " OR \n                        renterId = " + parseInt(keyWord) + " ";
+                }
+                else if (startDate && endDate && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
+                    queryString = "SELECT * FROM rent where \n                            date >= " + parseInt(startDate) + " AND \n                            date <= " + parseInt(endDate) + " ";
+                }
+                else {
+                    queryString = ' SELECT * FROM  rent ';
+                }
+                return [4 /*yield*/, new DbManager_1.DbManager().exec(queryString)];
             case 1:
-                rentList = _a.sent();
+                rentList = _b.sent();
                 if (rentList) {
                     response.success = true;
                     response.rent = rentList;
