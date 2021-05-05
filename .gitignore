@@ -1,2 +1,18 @@
-node_modules
-*/*/node_modules
+#api
+api/node_modules
+api/dist
+#app
+node_modules/
+app/node_modules
+app/.expo/
+app/npm-debug.*
+app/*.jks
+app/*.p8
+app/*.p12
+app/*.key
+app/*.mobileprovision
+app/*.orig.*
+app/web-build/
+
+# macOS
+app/.DS_Store
