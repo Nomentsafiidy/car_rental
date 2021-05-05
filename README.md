@@ -1,2 +1,2 @@
-# car_rental
-Car rental API with express and front with react native
+# carRental
+Car rental back with nodeJS / front with ReactNative
