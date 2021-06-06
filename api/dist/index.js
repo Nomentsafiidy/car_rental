@@ -10,6 +10,11 @@ var renter_1 = require("./routes/renter");
 var rent_1 = require("./routes/rent");
 var app = express_1.default();
 var port = 3000;
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 app.use(express_1.default.json());
 app.use(car_1.carRouter);
 app.use(renter_1.renterRouter);

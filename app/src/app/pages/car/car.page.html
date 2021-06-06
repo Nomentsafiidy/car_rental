@@ -8,5 +8,24 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    Voiture work !!!
+    <ion-searchbar [(ngModel)]="keyWord" (ionChange)="keyWordChange($event)"></ion-searchbar>
+    <ion-list>
+        <ion-item *ngFor="let car of cars">
+            <ion-label>
+                <div>{{ car.designation }}</div>
+                <div><ion-text color="danger">$</ion-text> {{ car.dailyRent }}</div>
+            </ion-label>
+            <ion-buttons>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="create"></ion-icon>
+                </ion-button>
+                <ion-button>
+                    <ion-icon color="danger" slot="icon-only" name="trash-bin"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-item>
+    </ion-list>
+    <button color="warning" class="add_btn">
+        +
+    </button>
 </ion-content>
