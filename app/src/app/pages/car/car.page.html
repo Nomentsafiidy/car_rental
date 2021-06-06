@@ -16,7 +16,7 @@
                 <div><ion-text color="danger">$</ion-text> {{ car.dailyRent }}</div>
             </ion-label>
             <ion-buttons>
-                <ion-button>
+                <ion-button (click)="updateCar(car)">
                     <ion-icon slot="icon-only" name="create"></ion-icon>
                 </ion-button>
                 <ion-button (click)="onDelete(car)">
@@ -25,7 +25,7 @@
             </ion-buttons>
         </ion-item>
     </ion-list>
-    <button color="warning" class="add_btn">
+    <button (click)="addCar()" color="warning" class="add_btn">
         +
     </button>
 </ion-content>

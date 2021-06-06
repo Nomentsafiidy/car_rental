@@ -39,3 +39,22 @@
     right: 20px;
     box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
 }
+
+/* modale */
+.modal_auto_size {
+    --height: auto;
+    --width: auto;
+    .modal-wrapper {
+        max-width: 90vw;
+        border-radius: 5px;
+        max-height: 90vh;
+        .ion-page {
+            position: relative;
+            contain: content;
+            max-height: 90vh;
+            .modal-content {
+                overflow: auto;
+            }
+        }
+    }
+}

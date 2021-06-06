@@ -10,8 +10,10 @@ import { CarPageRoutingModule } from './car-routing.module';
 
 import { CarPage } from './car.page';
 
+import { CarComponentModule } from 'src/app/components/car/car-module';
+
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, CarPageRoutingModule, HttpClientModule],
+    imports: [CommonModule, FormsModule, IonicModule, CarPageRoutingModule, HttpClientModule, CarComponentModule],
     declarations: [CarPage],
 })
 export class CarPageModule {}

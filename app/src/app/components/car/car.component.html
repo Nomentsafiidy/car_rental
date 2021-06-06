@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="header">
+        <div class="title">
+            Car
+        </div>
+    </div>
+    <form *ngIf="carFrom" [formGroup]="carFrom" (ngSubmit)="saveChange()">
+        <ion-item style="margin-right: 15px;" color="none">
+            <ion-label position="stacked">Designation</ion-label>
+            <ion-input type="text" formControlName="designation"></ion-input>
+        </ion-item>
+
+        <ion-item style="margin-right: 15px;" color="none">
+            <ion-label position="stacked">Taux journalier</ion-label>
+            <ion-input type="number" formControlName="dailyRent"></ion-input>
+        </ion-item>
+
+        <div style="padding: 5px 16px;">
+            <ion-button expand="full" [disabled]="!carFrom.valid" size="medium" type="submit">
+                <ion-text color="light">
+                    Enregistrer
+                </ion-text>
+            </ion-button>
+        </div>
+    </form>
+</div>
