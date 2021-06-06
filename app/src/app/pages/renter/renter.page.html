@@ -8,5 +8,24 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    Locataire work !!!
+    <ion-searchbar [(ngModel)]="keyWord" (ionChange)="keyWordChange($event)"></ion-searchbar>
+    <ion-list>
+        <ion-item *ngFor="let renter of renters">
+            <ion-label>
+                <div>{{ renter.name }}</div>
+                <div>{{ renter.address }}</div>
+            </ion-label>
+            <ion-buttons>
+                <ion-button (click)="updateRenter(renter)">
+                    <ion-icon slot="icon-only" name="create"></ion-icon>
+                </ion-button>
+                <ion-button (click)="onDelete(renter)">
+                    <ion-icon color="danger" slot="icon-only" name="trash-bin"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-item>
+    </ion-list>
+    <button (click)="addRenter()" color="warning" class="add_btn">
+        +
+    </button>
 </ion-content>
