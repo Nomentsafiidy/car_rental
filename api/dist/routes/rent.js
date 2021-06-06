@@ -78,6 +78,58 @@ exports.rentRouter.post('/getRents', function (req, res) { return __awaiter(void
         }
     });
 }); });
+exports.rentRouter.post('/getRentInfoGroupByCar', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, queryString, rentList, _a, startDate, endDate, queryCarString, carList, group, i;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                response = {
+                    success: false,
+                };
+                queryString = '';
+                _a = req.body, startDate = _a.startDate, endDate = _a.endDate;
+                queryCarString = 'SELECT * FROM car';
+                return [4 /*yield*/, new DbManager_1.DbManager().exec(queryCarString)];
+            case 1:
+                carList = _b.sent();
+                group = [];
+                i = 0;
+                _b.label = 2;
+            case 2:
+                if (!(i < carList.length)) return [3 /*break*/, 5];
+                if (startDate && endDate && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {
+                    queryString = "SELECT rent.id as id, carId, renterId, daysNumber, date, \n                            designation, dailyRent,\n                            name, address, car.id as carGroup                         \n                            FROM rent \n                            INNER JOIN car ON car.id = carId\n                            INNER JOIN renter ON renter.id = renterId \n                            where \n                                date >= " + parseInt(startDate) + " AND \n                                date <= " + parseInt(endDate) + " AND\n                                carId = " + carList[i].id + "\n                             ";
+                }
+                else {
+                    queryString = " SELECT rent.id as id, carId, renterId, daysNumber, date, \n                            designation, dailyRent,\n                            name, address                        \n                            FROM rent \n                            INNER JOIN car ON car.id = carId\n                            INNER JOIN renter ON renter.id = renterId \n                            where carId = " + carList[i].id + "\n                            ";
+                }
+                return [4 /*yield*/, new DbManager_1.DbManager().exec(queryString)];
+            case 3:
+                rentList = _b.sent();
+                if (rentList) {
+                    group.push({
+                        car: carList[i],
+                        rent: rentList,
+                    });
+                }
+                _b.label = 4;
+            case 4:
+                i++;
+                return [3 /*break*/, 2];
+            case 5:
+                if (group && group.length !== 0) {
+                    response.success = true;
+                    response.rents = group;
+                }
+                else {
+                    response.success = false;
+                    response.message = 'Error :';
+                }
+                res.json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });
 exports.rentRouter.get('/deleteRent/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var response, qr;
     return __generator(this, function (_a) {

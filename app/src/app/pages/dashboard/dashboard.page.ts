@@ -19,6 +19,10 @@ export class DashboardPage implements OnInit {
     public startDate: number;
     public endDate: number;
     public rents: Rent[] = [];
+    //
+    public carsInfo: any[] = [];
+    public rentStartDate: number;
+    public rentEndDate: number;
     constructor(private httpClient: HttpClient, private modalController: ModalController) {}
 
     async ngOnInit() {
@@ -26,7 +30,10 @@ export class DashboardPage implements OnInit {
         if (this.cars && this.cars.length !== 0) this.carId = this.cars[0].id;
         this.startDate = new Date().getTime();
         this.endDate = new Date('2021-12-31').getTime();
+        this.rentStartDate = new Date().getTime();
+        this.rentEndDate = new Date('2021-12-31').getTime();
         this.fetchData(this.carId, this.startDate, this.endDate);
+        this.getRentGroupByCar(this.rentStartDate, this.rentEndDate);
     }
 
     fetchCars() {
@@ -60,6 +67,40 @@ export class DashboardPage implements OnInit {
             });
     }
 
+    getRentGroupByCar(startDate: number, endDate: number) {
+        this.httpClient
+            .post(environment.apiUrl + 'getRentInfoGroupByCar', {
+                startDate: startDate,
+                endDate: endDate,
+            })
+            .subscribe((res: any) => {
+                this.carsInfo = [];
+                if (res.rents && res.rents.length !== 0) {
+                    res.rents.forEach((element) => {
+                        let tmp = {
+                            name: '',
+                            nbRent: 0,
+                            priceRent: 0,
+                        };
+
+                        let tp = 0;
+                        let tn = 0;
+                        element.rent.forEach((aze) => {
+                            tp += aze.daysNumber * aze.dailyRent;
+                            tn += 1;
+                        });
+                        tmp.name = element.car.designation;
+                        tmp.nbRent = tn;
+                        tmp.priceRent = tp;
+
+                        this.carsInfo.push(tmp);
+                    });
+                    console.log('this.carsInfo', this.carsInfo);
+                }
+                console.log('res', res);
+            });
+    }
+
     getTotal() {
         let t = 0;
         this.rents.forEach((rent) => {
@@ -78,8 +119,18 @@ export class DashboardPage implements OnInit {
         this.fetchData(this.carId, this.startDate, this.endDate);
     }
 
+    rentStartDateChange(event: any) {
+        this.rentStartDate = new Date(event.detail.value).getTime();
+        this.getRentGroupByCar(this.rentStartDate, this.rentEndDate);
+    }
+
     endDateChange(event: any) {
         this.endDate = new Date(event.detail.value).getTime();
         this.fetchData(this.carId, this.startDate, this.endDate);
+    }
+
+    rentEndDateChange(event: any) {
+        this.rentEndDate = new Date(event.detail.value).getTime();
+        this.getRentGroupByCar(this.rentStartDate, this.rentEndDate);
     }
 }

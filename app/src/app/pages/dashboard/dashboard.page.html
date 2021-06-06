@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+    <h4>
+        Liste des locataires
+    </h4>
     <ion-item>
         <ion-label>Voiture</ion-label>
         <ion-select *ngIf="carId" [value]="carId" (ionChange)="carChange($event)" placeholder="Voiture">
@@ -45,6 +48,31 @@
                 <td></td>
                 <td>Total</td>
                 <td>{{ getTotal() }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>
+        Location par voiture
+    </h4>
+    <ion-item style="margin-right: 15px;">
+        <ion-label>Date de debut</ion-label>
+        <ion-datetime (ionChange)="rentStartDateChange($event)" displayFormat="DD MMMM YYYY" min="2021-05-21" max="2024-12-24"></ion-datetime>
+    </ion-item>
+    <ion-item style="margin-right: 15px;">
+        <ion-label>Date de fin</ion-label>
+        <ion-datetime (ionChange)="rentEndDateChange($event)" displayFormat="DD MMMM YYYY" min="2021-05-21" max="2024-12-24"></ion-datetime>
+    </ion-item>
+    <table>
+        <thead>
+            <th>Voiture</th>
+            <th>Effectif</th>
+            <th>Total</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let info of carsInfo">
+                <td>{{ info.name }}</td>
+                <td>{{ info.nbRent }}</td>
+                <td>{{ info.priceRent }}</td>
             </tr>
         </tbody>
     </table>
