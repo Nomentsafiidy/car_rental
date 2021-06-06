@@ -8,5 +8,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    Location work !!!
+    <ion-searchbar [(ngModel)]="keyWord" (ionChange)="keyWordChange($event)"></ion-searchbar>
+    <ion-list>
+        <ion-item *ngFor="let rent of rents">
+            <ion-label>
+                <div>Locataire : {{ rent.name }}</div>
+                <div>Voiture : {{ rent.designation }}</div>
+                <div>Date : {{ rent.date | date:'dd MMM yyyy' : '' : 'fr' }}</div>
+                <div>Nombre de jour : {{ rent.daysNumber }}</div>
+                <div>$ Prix : {{ rent.daysNumber * rent.dailyRent }}</div>
+            </ion-label>
+            <ion-buttons>
+                <ion-button (click)="updateRent(rent)">
+                    <ion-icon slot="icon-only" name="create"></ion-icon>
+                </ion-button>
+                <ion-button (click)="onDelete(rent)">
+                    <ion-icon color="danger" slot="icon-only" name="trash-bin"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-item>
+    </ion-list>
+    <button (click)="addRent()" color="warning" class="add_btn">
+        +
+    </button>
 </ion-content>

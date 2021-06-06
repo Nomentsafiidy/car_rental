@@ -1,3 +1,38 @@
-<p>
-  rent works!
-</p>
+<div class="container">
+    <div class="header">
+        <div class="title">
+            Location
+        </div>
+    </div>
+    <ion-item>
+        <ion-label>Locataire</ion-label>
+        <ion-select (ionChange)="renterChange($event)" [value]="rent.renterId" placeholder="Select One" placeholder="Voiture">
+            <ion-select-option *ngFor="let renter of renters" [value]="renter.id">{{ renter.name }}</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Voiture</ion-label>
+        <ion-select [value]="rent.carId" (ionChange)="carChange($event)" placeholder="Voiture">
+            <ion-select-option *ngFor="let car of cars" [value]="car.id">{{ car.designation }}</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item style="margin-right: 15px;" color="none">
+        <ion-label position="stacked">Nombre de jours</ion-label>
+        <ion-input [(ngModel)]="rent.daysNumber" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item style="margin-right: 15px;">
+        <ion-label position="stacked">Date</ion-label>
+        <ion-datetime (ionChange)="dateChange($event)" displayFormat="DD MMMM YYYY" min="2021-05-21" max="2024-12-24"></ion-datetime>
+    </ion-item>
+
+    <div style="padding: 5px 16px;">
+        <ion-button expand="full" (click)="saveChange()" [disabled]="!rentValid()" size="medium" type="submit">
+            <ion-text color="light">
+                Enregistrer
+            </ion-text>
+        </ion-button>
+    </div>
+</div>
