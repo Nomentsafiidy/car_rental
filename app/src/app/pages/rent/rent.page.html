@@ -12,6 +12,7 @@
     <ion-list>
         <ion-item *ngFor="let rent of rents">
             <ion-label>
+                <div>Facture : L{{rent.id}}</div>
                 <div>Locataire : {{ rent.name }}</div>
                 <div>Voiture : {{ rent.designation }}</div>
                 <div>Date : {{ rent.date | date:'dd MMM yyyy' : '' : 'fr' }}</div>

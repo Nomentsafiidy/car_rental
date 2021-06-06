@@ -70,6 +70,8 @@ export class RentPage implements OnInit {
     }
 
     keyWordChange(event: any) {
+        console.log('this.key' + this.keyWord);
+
         this.fetchData(this.keyWord);
     }
 

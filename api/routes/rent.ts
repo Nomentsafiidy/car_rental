@@ -35,7 +35,7 @@ rentRouter.post('/getRents', async (req: Request, res: Response) => {
                         INNER JOIN car ON car.id = carId
                         INNER JOIN renter ON renter.id = renterId
                         where
-                        id = ${parseInt(keyWord)} OR
+                        rent.id = ${parseInt(keyWord)} OR
                         carId = ${parseInt(keyWord)} OR 
                         renterId = ${parseInt(keyWord)} `;
     } else if (startDate && endDate && !isNaN(parseInt(startDate)) && !isNaN(parseInt(endDate))) {

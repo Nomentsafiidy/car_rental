@@ -8,5 +8,44 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    Dashboard work !!!
+    <ion-item>
+        <ion-label>Voiture</ion-label>
+        <ion-select *ngIf="carId" [value]="carId" (ionChange)="carChange($event)" placeholder="Voiture">
+            <ion-select-option *ngFor="let car of cars" [value]="car.id">{{ car.designation }}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item style="margin-right: 15px;">
+        <ion-label>Date de debut</ion-label>
+        <ion-datetime (ionChange)="startDateChange($event)" displayFormat="DD MMMM YYYY" min="2021-05-21" max="2024-12-24"></ion-datetime>
+    </ion-item>
+    <ion-item style="margin-right: 15px;">
+        <ion-label>Date de fin</ion-label>
+        <ion-datetime (ionChange)="endDateChange($event)" displayFormat="DD MMMM YYYY" min="2021-05-21" max="2024-12-24"></ion-datetime>
+    </ion-item>
+
+    <table>
+        <thead>
+            <th>Locataire</th>
+            <th>Date</th>
+            <th>Loyer/J</th>
+            <th>Nb Jours</th>
+            <th>Montant</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let rent of rents">
+                <td>{{ rent.name }}</td>
+                <td>{{ rent.date | date:'dd MMM yyyy' : '' : 'fr' }}</td>
+                <td>{{ rent.dailyRent }}</td>
+                <td>{{ rent.daysNumber }}</td>
+                <td>{{ rent.daysNumber * rent.dailyRent }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td>{{ getTotal() }}</td>
+            </tr>
+        </tbody>
+    </table>
 </ion-content>

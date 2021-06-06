@@ -1,0 +1,23 @@
+table,
+th,
+td {
+    border: 1px solid black;
+}
+table {
+    margin: 16px 10px;
+    width: calc(100% - 32px);
+}
+thead {
+    th {
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
+    }
+}
+tbody {
+    td {
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
+    }
+}
